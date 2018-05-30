@@ -153,7 +153,7 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>data1</ItemText>
+          <ItemText>aTxBuffer1</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
@@ -163,12 +163,7 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>aTxBuffer6</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>UartReady</ItemText>
+          <ItemText>stringTemplateX</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

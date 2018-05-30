@@ -39,7 +39,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_hal.h"
-
+#include "string.h"
+#include "stdlib.h"
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -51,12 +52,12 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-uint8_t aTxBuffer1[] = "+++";
-uint8_t aTxBuffer2[] = "AT+SAVETRANSLINK=0\r\n";
-uint8_t aTxBuffer3[] = "AT+CIPSTART=\"TCP\",\"45.40.240.159\",6969\r\n";
+uint8_t aTxBuffer1[] = "+++\r\n";
+uint8_t aTxBuffer2[] = "AT+SAVETRANSLINK=1,\"47.106.143.61\",8080,\"TCP\"\r\n";
+uint8_t aTxBuffer3[] = "AT+CIPSTART=\"TCP\",\"47.106.143.61\",8080\r\n";
 uint8_t aTxBuffer4[] = "AT+CIPMODE=1\r\n";
 uint8_t aTxBuffer5[] = "AT+CIPSEND\r\n";
-uint8_t aTxBuffer6[] = "GET / HTTP/1.1\r\n"
+uint8_t aTxBuffer6[] = "POST / HTTP/1.1\r\n"
 "Host: 45.40.240.159:6969\r\n"
 "Connection: keep-alive\r\n"
 "Pragma: no-cache\r\n"
@@ -66,8 +67,37 @@ uint8_t aTxBuffer6[] = "GET / HTTP/1.1\r\n"
 "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n"
 "Accept-Encoding: gzip, deflate\r\n"
 "Accept-Language: zh-CN,zh;q=0.9\r\n"
-"\r\n";
+"Content-Type: application/x-www-form-urlencoded\r\n"
+"Content-Length: 30\r\n"
+"\r\n"
+"tempureture=1&humidity=2";
 
+
+char * stringTemplate1 = "POST /airSensor/servlet/regServlet HTTP/1.1\r\n"
+//"Host: 45.40.240.159:6969\r\n"
+"Host: 47.106.143.61:8080\r\n"
+"Connection: keep-alive\r\n"
+"Pragma: no-cache\r\n"
+"Cache-Control: no-cache\r\n"
+"Upgrade-Insecure-Requests: 1\r\n"
+"User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36\r\n"
+"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n"
+"Accept-Encoding: gzip, deflate\r\n"
+"Accept-Language: zh-CN,zh;q=0.9\r\n"
+"Content-Type: application/x-www-form-urlencoded\r\n"
+"Content-Length: ";
+
+char *stringTemplate2 = "\r\n"
+"\r\n"
+"tmp=";
+
+char *stringTemplate3 = "&hum=";
+
+char *stringTemplate4 = "&sensor_id=";
+
+char stringTemplateX[1000] ;
+
+char stringTemplateParams[100];
 
 #define TXBUFFERSIZE                      sizeof(aTxBuffer)-1
 
@@ -118,7 +148,7 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+  /* USER CODE END Init */ 
 
   /* Configure the system clock */
   SystemClock_Config();
@@ -148,7 +178,6 @@ int main(void)
   /* USER CODE BEGIN 3 */
 	  unsigned char data[] = {0,0,0,0,0,0,0,0,0,0};
 		unsigned char data1[] = {0,0,0,0,0,0,0,0,0,0};
-		
 		/*HAL_UART_Receive_IT(&huart1 , (uint8_t*)aRxBuffer , RXBUFFERSIZE);
 		while(UartReady != SET);
 		UartReady = RESET;*/
@@ -206,15 +235,28 @@ int main(void)
 		}
 		__nop();
 		// DHT11接受结束， 接受数据存放在data1中
+		sprintf(stringTemplateParams,"%s%d%s%d%s%d",stringTemplate2,data1[2],stringTemplate3,data1[0],stringTemplate4,1);
+		int size1 = strlen(stringTemplateParams)-4;
+		sprintf(stringTemplateX,"%s%d%s",stringTemplate1,size1,stringTemplateParams);
+		int size2 = strlen(stringTemplateX);
+		
+		//uint8_t *aTxBuffer = (uint8_t*)malloc(500);
+		//strcpy(aTxBuffer,stringTemplateX);
 		
 		//开始ESP8266发送
-		HAL_UART_Transmit_IT(&huart1, (uint8_t*)aTxBuffer6, sizeof(aTxBuffer6)-1); //指针强制转换
+		HAL_UART_Transmit_IT(&huart1, (uint8_t*)stringTemplateX, size2); //指针强制转换
 		while(UartReady != SET);
 		UartReady = RESET;
-		HAL_UART_Receive_IT(&huart1 , (uint8_t*)aRxBuffer , RXBUFFERSIZE);
-		while(UartReady != SET);
-		UartReady = RESET;
+		//HAL_UART_Transmit_IT(&huart1, (uint8_t*)aTxBuffer2, sizeof(aTxBuffer2)-1); //指针强制转换
+		//while(UartReady != SET);
+		//UartReady = RESET;
+		//HAL_UART_Receive_IT(&huart1 , (uint8_t*)aRxBuffer , RXBUFFERSIZE);
+		//while(UartReady != SET);
+		//UartReady = RESET;
 		__nop();
+		
+		systickDelay(28000);
+		
   }
   /* USER CODE END 3 */
 
