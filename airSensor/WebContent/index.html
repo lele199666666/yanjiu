@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>校园空气质量检测试验平台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/map.css">
+</head>
+
+<body>
+    <div class="container">
+        <div id="header">
+            <span class="header-title">SCU Air Detection Platform</span>
+            <span class="header-info">
+                联系我们
+                <i class="header-arrow"></i>
+                <ul class="info-ul">
+                    <li>
+                        <img src="./info_qq.png" alt="" class="info-img-qq">
+                        <span class="info-text">
+                            <p class="info-text-title">QQ</p>
+                            <p>972931182</p>
+                        </span>
+                    </li>
+                    <li>
+                        <img src="./info_wechat.png" alt="" class="info-img-wechat">
+                        <span class="info-text">
+                            <p class="info-text-title">WeChat</p>
+                            <p>xackerb</p>
+                        </span>
+                    </li>
+                </ul>
+            </span>
+            <span class="header-admin">
+                管理员
+                <i class="header-arrow"></i>
+                <ul class="admin-ul">
+                    <li>
+                        <span class="admin-text">
+                            登录
+                        </span>
+                    </li>
+                </ul>
+            </span>
+            <i class="dividing-line"></i>
+        </div>
+        <div id="main">
+            <img class="main-logo" src="./main_logo.png" alt="">
+            <span>
+                <p class="main-text">{{title.line1}}
+                    <br>{{title.line2}}
+                    <span>{{title.line3}}</span>
+                </p>
+                <img v-on:click="start" src="./main_start.png" alt="">
+                <a href="https://github.com/jiladahe1997">
+                    <img src="./main_github.png" alt="">
+                </a>
+            </span>
+        </div>
+        <ul class="switching">
+            <li class="switching-selected"></li>
+            <br>
+            <li class="switching-unselected"></li>
+        </ul>
+        <i class="footer-arrow"></i>
+    </div>
+    <div class="dataPage">
+        <div class="data">
+
+            <div class="data-title">
+                <div class="title-left fl"></div>
+                <div class="title-center fl" style="font-size: 40px;text-align: center;color: white">校园天气检测平台</div>
+                <div class="title-right fr"></div>
+            </div>
+            <div class="data-content">
+                <div class="con-left fl">
+                    <div class="left-top">
+                        <div class="info">
+                            <div class="info-title">实时统计</div>
+                            <img src="img/bj-1.png" alt="" class="bj-1">
+                            <img src="img/bj-2.png" alt="" class="bj-2">
+                            <img src="img/bj-3.png" alt="" class="bj-3">
+                            <img src="img/bj-4.png" alt="" class="bj-4">
+                            <div class="info-main">
+                                <div class="info-1">
+                                    <div class="info-img fl">
+                                        <img src="img/info-img-1.png" alt="">
+                                    </div>
+                                    <div class="info-text fl">
+                                        <p>温湿度监测器1</p>
+                                        <p>运行中
+                                            <span style="font-size:14px;color: white">位置:实时</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="info-2">
+                                    <div class="info-img fl">
+                                        <img src="img/info-img-2.png" alt="">
+                                    </div>
+                                    <div class="info-text fl">
+                                        <p>温湿度监测器2</p>
+                                        <p>传感器离线</p>
+                                    </div>
+                                </div>
+                                <div class="info-3">
+                                    <div class="info-img fl">
+                                        <img src="img/info-img-3.png" alt="">
+                                    </div>
+                                    <div class="info-text fl">
+                                        <p>空气质量传感器</p>
+                                        <p>传感器离线</p>
+                                    </div>
+                                </div>
+                                <!--<div class="info-4">
+                                <div class="info-img fl">
+                                    <img src="img/info-img-4.png" alt="">
+                                </div>
+                                <div class="info-text fl">
+                                    <p>今日出行建议</p>
+                                    <p>需戴口罩</p>
+                                </div>
+                            </div>-->
+                            </div>
+                        </div>
+                        <div class="top-bottom">
+                            <div class="title">预警</div>
+                            <img src="img/bj-1.png" alt="" class="bj-1">
+                            <img src="img/bj-2.png" alt="" class="bj-2">
+                            <img src="img/bj-3.png" alt="" class="bj-3">
+                            <img src="img/bj-4.png" alt="" class="bj-4">
+                            <p style="color: white;">暂无预警</p>
+                            <div id="echarts_1" style="display:none" class="charts"></div>
+                        </div>
+                    </div>
+                    <div class="left-bottom">
+                        <div class="title">今日建议</div>
+                        <img src="img/bj-1.png" alt="" class="bj-1">
+                        <img src="img/bj-2.png" alt="" class="bj-2">
+                        <img src="img/bj-3.png" alt="" class="bj-3">
+                        <img src="img/bj-4.png" alt="" class="bj-4">
+                        <p style="color: orangered;">天气炎热，请注意防止中暑</p>
+                        <div id="echarts_2" style="display:none" class="charts"></div>
+                    </div>
+                </div>
+                <div class="con-center fl">
+                    <!--<div class="map-num">
+                    <p>实时温度和湿度</p>
+                    <div class="num">
+                        <span>1</span>
+                        <span>,</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>,</span>
+                        <span>5</span>
+                        <span>6</span>
+                        <span>7</span>
+                    </div>
+                </div>-->
+                    <div class="cen-top" id="map" style="display: none;"></div>
+                    <div class="cen-bottom">
+                        <div class="title">温度变化趋势</div>
+                        <img src="img/bj-1.png" alt="" class="bj-1">
+                        <img src="img/bj-2.png" alt="" class="bj-2">
+                        <img src="img/bj-3.png" alt="" class="bj-3">
+                        <img src="img/bj-4.png" alt="" class="bj-4">
+                        <div id="echarts_3" class="charts"></div>
+                    </div>
+                    <div class="cen-bottom">
+                        <div class="title">湿度变化趋势</div>
+                        <img src="img/bj-1.png" alt="" class="bj-1">
+                        <img src="img/bj-2.png" alt="" class="bj-2">
+                        <img src="img/bj-3.png" alt="" class="bj-3">
+                        <img src="img/bj-4.png" alt="" class="bj-4">
+                        <div id="echarts_4" class="charts"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./index.js"></script>
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/china.js"></script>
+    <script src="js/echarts.js"></script>
+</body>
+
+</html>
